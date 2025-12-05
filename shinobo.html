@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="振動表現プロジェクト　誰もが参画できる新しい表現を探る日本大学学生プロジェクト">
+    <title>vibratory expression - 振動表現プロジェクト</title>
+    <link rel="stylesheet" href="shinobo.css">
+</head>
+<body>
+  <!-- 振動体験ポップアップ -->
+<div id="vibrationPopup" class="popup-overlay">
+    <div class="popup-content">
+        <button class="popup-close" onclick="closePopup()" aria-label="閉じる">×</button>
+        
+        <!-- 言語切り替えボタンを追加 -->
+        <button 
+            id="popupLangBtn" 
+            class="popup-lang-button" 
+            onclick="toggleLanguage()" 
+            aria-label="言語を切り替える。現在：日本語">
+            <span id="popupLangText" aria-hidden="true">EN</span>
+        </button>
+        
+        <div class="popup-header">
+            <h2>まず 振動を体験</h2>
+        </div>
+        
+        <div class="warning-box" role="alert">
+            <h3>体験前の注意事項</h3>
+            <ul>
+                <li>・一部の古い端末では動作しません</li>
+                <li>・不快感を感じたら中止してください</li>
+            </ul>
+        </div>
+        
+        <!-- ステップ1：選択 -->
+        <div id="popup-step1" class="vibration-area">
+            <p class="tagline">揺れる</p>
+            <p>一人でも　誰かと一緒でも</p>
+            
+            <div class="choice-buttons">
+                <button class="choice-button" onclick="popupChooseAlone()" aria-label="一人で振動を体験する">
+                    <strong>一人で体験する</strong>
+                </button>
+                <button class="choice-button" onclick="popupChooseTogether()" aria-label="誰かと一緒に振動を体験する">
+                    <strong>誰かと一緒に体験する</strong>
+                </button>
+            </div>
+        </div>
+
+        <!-- ステップ2：一人での体験 -->
+        <div id="popup-step2alone" class="vibration-area hidden">
+            <p class="tagline"><span class="tre">振動を感じる</span></p>
+            <p><span class="tre">自分で起こして自分に伝える</span></p>
+            
+            <button 
+                class="vibration-button" 
+                id="popupAloneButton"
+                onclick="popupVibrateAlone()"
+                aria-label="振動ボタン。押すとスマートフォンが振動します">
+                〜
+            </button>
+            
+            <div class="vibration-status" id="popupAloneStatus" role="status" aria-live="polite">
+                ボタンを押してください
+            </div>
+
+            <div style="margin-top: 20px;">
+                <p style="font-style: italic;">
+                    この振動どのように伝わった？<br>
+                </p>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button class="button-secondary button" onclick="popupChooseTogether()">
+                    誰かと共有してみる
+                </button>
+                <button class="button-secondary button" onclick="popupBackToStart()">
+                    最初に戻る
+                </button>
+            </div>
+        </div>
+
+        <!-- ステップ3：一緒に体験 -->
+        <div id="popup-step2together" class="vibration-area hidden">
+            <p class="tagline">この振動体験を共有</p>
+            <p>
+                ボタンを押して振動を体験<br>
+                そして誰かにも振動を届ける<br>
+            </p>
+            
+            <button 
+                class="vibration-button" 
+                id="popupTogetherButton"
+                onclick="popupVibrateTogether()"
+                aria-label="振動ボタン">
+                〜〜
+            </button>
+            
+            <div class="vibration-status" id="popupTogetherStatus" role="status" aria-live="polite">
+                ボタンを押してください
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- 以下は既存のコンテンツ -->
+   
+    <!-- スクリーンリーダー用スキップリンク -->
+    <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+    <a href="#experience" class="skip-link">振動体験へジャンプ</a>
+    <a href="#about" class="skip-link">コンセプトへジャンプ</a>
+    <a href="#recruitment" class="skip-link">メンバー募集へジャンプ</a>
+    <a href="#contact" class="skip-link">応募フォームへジャンプ</a>
+
+    <header role="banner">
+        <div class="header-container">
+            <!-- ロゴ -->
+            <div class="site-logo">
+                <h1><span class="vib"> VIBRATORY</span> <br>  EXPRESSION LAB</h1>
+                     <p class="tagline">
+        <span class="orange">振動</span>は表現になるか？
+        </p>
+        <p class="subtitle">
+        「令和8年度日本大学自主創造プロジェクト 日大生のやってみたいを実現するプロジェクト」申請予定</p>
+            </div>
+            
+            <!-- 言語切り替え＆メニューボタン -->
+            <div class="header-controls">
+                <!-- 言語切り替え -->
+                <button 
+                    id="langBtn" 
+                    class="lang-button" 
+                    onclick="toggleLanguage()" 
+                       
+                    aria-label="言語を切り替える。現在：日本語">
+                    <span id="langText" aria-hidden="true">EN</span>
+                </button>
+                
+                <!-- ハンバーガーメニューボタン -->
+                <button 
+                    id="menuBtn" 
+                    class="menu-button" 
+                    onclick="toggleMenu()"
+                    aria-label="メニューを開く"
+                    aria-expanded="false"
+                    aria-controls="main-nav">
+                    <span class="menu-icon" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <span class="menu-text">メニュー</span>
+                </button>
+            </div>
+        </div>
+        
+ 
+        
+        <!-- ナビゲーションメニュー -->
+        <nav 
+            id="main-nav" 
+            class="main-nav" 
+            role="navigation" 
+            aria-label="メインナビゲーション"
+            hidden>
+            <ul>
+ 
+                <li><a href="#about" onclick="closeMenu()">この企画について</a></li>
+                <li><a href="#recruitment" onclick="closeMenu()">メンバー募集概要</a></li>
+                <li><a href="#contact" onclick="closeMenu()">応募フォーム</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main id="main-content" role="main">
+        
+        <!-- 振動体験セクション -->
+        <section id="experience" aria-labelledby="experience-heading">
+            <h2 id="experience-heading">まず 振動を体験</h2>
+            
+            <div class="warning-box" role="alert">
+                <h3>体験前の注意事項</h3>
+                <ul>
+                    <li>・一部の古い端末では動作しません</li>
+                    <li>・不快感を感じたら中止してください</li>
+                </ul>
+            </div>
+            <!-- ステップ1：選択 -->
+            <div id="step1" class="vibration-area">
+                <p class="tagline">揺れる</p>
+                <p>一人でも　誰かと一緒でも</p>
+                
+                <div class="choice-buttons">
+                    <button class="choice-button" onclick="chooseAlone()" aria-label="一人で振動を体験する">
+                        <strong>一人で体験する</strong>
+                    </button>
+                    <button class="choice-button" onclick="chooseTogether()" aria-label="誰かと一緒に振動を体験する">
+                        <strong>誰かと一緒に体験する</strong>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ステップ2：一人での体験 -->
+            <div id="step2alone" class="vibration-area hidden">
+                <p class="tagline"><span class="tre">振動を感じる</span></p>
+                <p><span class="tre">自分で起こして自分に伝える</span></p>
+                
+                <button 
+                    class="vibration-button" 
+                    id="aloneButton"
+                    onclick="vibrateAlone()"
+                    aria-label="振動ボタン。押すとスマートフォンが振動します">
+                    〜
+                </button>
+                
+                <div class="vibration-status" id="aloneStatus" role="status" aria-live="polite">
+                    ボタンを押してください
+                </div>
+
+                <div style="margin-top: var(--spacing-large);">
+                    <p style="font-style: italic;">
+                        この振動どのように伝わった？<br>
+                    </p>
+                </div>
+
+                <div style="margin-top: var(--spacing-medium);">
+                    <button class="button-secondary button" onclick="chooseTogether()">
+                        誰かと共有してみる
+                    </button>
+                    <button class="button-secondary button" onclick="backToStart()" style="margin-left: 10px;">
+                        選択に戻る
+                    </button>
+                </div>
+            </div>
+
+        <!-- ステップ3：一緒に体験 -->
+<div id="step2together" class="vibration-area hidden">
+    <p class="tagline">この振動体験を共有</p>
+    <p>
+        ボタンを押して振動を体験<br>
+        そして誰かにも振動を届ける<br>
+    </p>
+    
+    <button 
+        class="vibration-button" 
+        id="togetherButton"
+        onclick="vibrateTogether()"
+        aria-label="振動ボタン">
+        〜〜
+    </button>
+    
+    <div class="vibration-status" id="togetherStatus" role="status" aria-live="polite">
+        ボタンを押してください
+    </div>
+
+    
+</div>
+            </div>
+        </section>
+
+       
+<!-- プロジェクト概要 -->
+<section id="about" aria-labelledby="about-heading">
+    <h2 id="about-heading">この企画について</h2>
+    
+    <div class="important-box">
+        <p>
+            <strong>表現をみんなに</strong>
+        </p>
+        <p>
+            振動そのものは、独立した表現手段になるのか？<br>
+            生きている身体 すべてが参画できる芸術の可能性を探ります。
+        </p>
+    </div>
+
+    <!-- 2段組エリア -->
+    <div class="two-column-about">
+        <div class="column-item">
+            <h3>企画概要</h3>
+            <p> 　芸術は、ある感覚では受け取りにくい人に対して、その表現を別の感覚へ置き換えることで共有されている。その変換の過程では、新たな価値が生まれたり逆に失われたりする可能性がある。その変化は興味深い。しかし、その体験は元の表現とは異なるものを受け取るものになる。
+            </p>
+            <p>
+                　そこで、本企画では誰もが直接参加できる表現として振動に注目する。振動は骨伝導や触覚によって伝わり、生きる誰もが心拍によって発生させている。<br>
+                　はたして振動は表現になるか？振動を他の何かの変化ではなく、表現方法自体にすることで、今までとは違う”万人に向けたダイレクトな表現”が可能になると考える。</p>
+        </div>
+
+        <div class="column-item">
+            <h3>やりたいこと</h3>
+            <ul>
+                <li>振動空間の制作（会場そのものを表現装置にする）</li>
+                <li>振動による表現の創案（例：演奏・描画・パフォーマンスなどの振動版）</li>
+                <li>身体障害を持つ人を含むメンバーへの体験実験とフィードバック</li>
+                <li>「振動芸術」という新ジャンルの提示と検証</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- メンバー募集 -->
+<section id="recruitment" aria-labelledby="recruitment-heading">
+    <h2 id="recruitment-heading">一緒に実験するメンバーを募集しています</h2>
+    
+    <div class="important-box">
+        <p><strong>同じ方向を向いてくれる全ての日大生を歓迎します。また、学外の方も大歓迎です。<br>不定期の参加も大歓迎です。</strong></p>
+       <p style="margin-top: 20px;">
+            <a href="./メンバー募集のための説明書.pdf" class="button" download aria-label="メンバー募集説明書PDFをダウンロード">
+                📄 詳しい説明書をダウンロード（PDF）
+            </a>
+        </p>
+    </div>
+
+    <!-- 2段組エリア -->
+    <div class="two-column-about">
+        <div class="column-item emphasis" data-animate="marker">
+            <h3><span class="highlight-text">特に以下の分野に関心がある方</span></h3>
+            <ul>
+                <li><strong>理工学部（建築・情報工学）：</strong>空間設計、振動測定、データ分析</li>
+                <li><strong>文理学部（社会学・心理学）：</strong>実験設計、インクルージョンの視点</li>
+                <li><strong>工学部：</strong>装置制作、ものづくり</li>
+                <li><strong>芸術学部：</strong>パフォーマンス、映像記録、デザイン</li>
+                <li><strong>その他全学部：</strong>新しい表現に関心がある人、誰でも歓迎</li>
+            </ul>
+        </div>
+
+        <div class="column-item emphasis" data-animate="marker">
+            <h3><span class="highlight-text">こんな経験ができます</span></h3>
+            <ul>
+                <li>実験的プロジェクト</li>
+                <li>学部を超えた協働体験</li>
+                <li>企画・制作・発表の一連の流れ</li>
+                <li>ポートフォリオ・就職活動の話題になる実績</li>
+                <li>社会に開かれた活動（成果の公開・発信）</li>
+            </ul>
+        </div>
+    </div>
+  
+</section>
+
+        <!-- プロジェクト情報 -->
+        <section id="info" aria-labelledby="info-heading">
+            <h2 id="info-heading">プロジェクト情報</h2>
+          
+            <div class="content-box">
+                <dl>
+                    <dt><strong>応募先</strong></dt>
+                    <dd>令和8年度日本大学自主創造プロジェクト
+日大生のやってみたいを実現するプロジェクト<a href="https://example.com">https://www.nihon-u.ac.jp/about/students_first/cooperation/</a></dd>
+                    
+                    <dt><strong>助成金</strong></dt>
+                    <dd>最大100万円</dd>
+                    
+                    <dt><strong>活動期間</strong></dt>
+                    <dd>2026年4月から2027年3月まで</dd>
+                    
+                    <dt><strong>必要なメンバー数</strong></dt>
+                    <dd>5名以上、2学部以上</dd>
+                </dl>
+            </div>
+        </section>
+
+       
+
+        <!-- 連絡フォーム -->
+        <section id="contact" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">興味がある方、ご連絡ください</h2>
+            
+            <p>
+                まずはお気軽に。質問だけでもOKです。<br>
+                以下のフォームまたは直接連絡でどうぞ。
+            </p>
+
+            <form id="contactForm" aria-label="連絡フォーム">
+                <div class="form-group">
+                    <label for="name">
+                        お名前 <span class="required" aria-label="必須">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        required 
+                        aria-required="true"
+                        autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="department">
+                        学部・学年 <span class="required" aria-label="必須">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="department" 
+                        name="department" 
+                        placeholder="例：理工学部 2年" 
+                        required 
+                        aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        メールアドレス <span class="required" aria-label="必須">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        aria-required="true"
+                        autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="interest">興味のある役割・分野（任意）</label>
+                    <select id="interest" name="interest" aria-label="興味のある役割・分野">
+                        <option value="">選択してください</option>
+                        <option value="design">空間設計・建築</option>
+                        <option value="engineering">装置制作・工学</option>
+                        <option value="data">データ分析・測定</option>
+                        <option value="research">実験設計・社会学・心理学</option>
+                        <option value="art">パフォーマンス・芸術表現</option>
+                        <option value="media">映像・記録・広報</option>
+                        <option value="inclusion">インクルージョン・アクセシビリティ</option>
+                        <option value="other">その他</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">メッセージ・質問（任意）</label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        placeholder="興味を持った理由、質問、やってみたいことなど、自由にどうぞ"
+                        aria-label="メッセージまたは質問"></textarea>
+                </div>
+
+                <button type="submit" class="button">送信</button>
+            </form>
+
+            <div id="formStatus" role="status" aria-live="polite"></div>
+
+            <!-- 直接連絡 -->
+            <div class="contact-box">
+                <h3>直接連絡する場合</h3>
+                <p>
+                    <strong>メール：</strong><a href="mailto:YOUR_EMAIL@example.com">arsa23085@g.nihon-u.ac.jp</a>
+                　芸術学部3年本間まで</p>
+                
+            </div>
+        </section>
+
+        <!-- 教員の方へ -->
+        <section id="faculty" aria-labelledby="faculty-heading">
+            <h2 id="faculty-heading">教員の方へ</h2>
+            
+            <div class="content-box">
+                <p>
+                    この企画は、工学、インクルーシブデザイン、芸術学など、複数の領域を横断する内容です。
+                </p>
+                <p>
+                    ご助言、ご協力いただける教員の方がいらっしゃいましたら、ぜひご連絡ください。
+                </p>
+          </div>
+
+    <!-- フッター -->
+    <footer role="contentinfo">
+      <p><strong><span class="vib">VIBRATORY</span> EXPRESSION LAB 
+        <br><span class="vib">振動</span>は表現になるか？</strong></p>
+        <p>「令和8年度日本大学自主創造プロジェクト
+日大生のやってみたいを実現するプロジェクト」申請予定</p>
+        <p class="note">
+            ※本プロジェクトは申請予定であり、採択を保証するものではありません<br>
+            ※日本大学の公認を示すものではありません
+        </p>
+    </footer>
+
+   <script>
+        // ========================================
+        // ポップアップ制御
+        // ========================================
+  function closePopup() {
+    document.getElementById('vibrationPopup').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    
+    // タイトルとtaglineにアニメーションクラスを追加
+    const siteLogo = document.querySelector('.site-logo');
+    const tagline = document.querySelector('.tagline');
+    
+    siteLogo.classList.add('popup-closed');
+    tagline.classList.add('popup-closed');
+    
+    // アニメーション終了後にクラスを削除
+    setTimeout(() => {
+        siteLogo.classList.remove('popup-closed');
+        tagline.classList.remove('popup-closed');
+    }, 1800);
+}
+
+        // ページ読み込み時にポップアップ表示
+        window.addEventListener('load', function() {
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Escキーで閉じる（ポップアップとメニュー両方）
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const popup = document.getElementById('vibrationPopup');
+                if (!popup.classList.contains('hidden')) {
+                    closePopup();
+                } else if (isMenuOpen) {
+                    closeMenu();
+                }
+            }
+        });
+
+        // ポップアップ背景クリックで閉じる
+        document.getElementById('vibrationPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        // ========================================
+        // 振動機能の変数
+        // ========================================
+        let lastVibrationTime = 0;
+        const VIBRATION_COOLDOWN = 2000;
+        let vibrationCount = 0;
+
+        // ========================================
+        // ポップアップ用の振動機能
+        // ========================================
+        function popupChooseAlone() {
+            // 注意書きを非表示
+            document.querySelector('.popup-content .warning-box').classList.add('hidden');
+            
+            document.getElementById('popup-step1').classList.add('hidden');
+            document.getElementById('popup-step2alone').classList.remove('hidden');
+            document.getElementById('popup-step2together').classList.add('hidden');
+        }
+
+        function popupChooseTogether() {
+            // 注意書きを非表示
+            document.querySelector('.popup-content .warning-box').classList.add('hidden');
+            
+            document.getElementById('popup-step1').classList.add('hidden');
+            document.getElementById('popup-step2alone').classList.add('hidden');
+            document.getElementById('popup-step2together').classList.remove('hidden');
+        }
+
+        function popupBackToStart() {
+            // 注意書きを再表示
+            document.querySelector('.popup-content .warning-box').classList.remove('hidden');
+            
+            document.getElementById('popup-step1').classList.remove('hidden');
+            document.getElementById('popup-step2alone').classList.add('hidden');
+            document.getElementById('popup-step2together').classList.add('hidden');
+            vibrationCount = 0;
+        }
+
+        function popupVibrateAlone() {
+            if (!navigator.vibrate) {
+                document.getElementById('popupAloneStatus').textContent = 
+                    'このデバイスは振動機能に対応していません';
+                return;
+            }
+
+            const now = Date.now();
+            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
+                document.getElementById('popupAloneStatus').textContent = 
+                    '少し待ってからもう一度押してください';
+                return;
+            }
+            lastVibrationTime = now;
+
+            const button = document.getElementById('popupAloneButton');
+            button.disabled = true;
+
+            const pattern = [100, 50, 100, 50, 150];
+            navigator.vibrate(pattern);
+
+            vibrationCount++;
+            document.getElementById('popupAloneStatus').textContent = 
+                `振動しました（${vibrationCount}回目）`;
+
+            setTimeout(() => {
+                button.disabled = false;
+                document.getElementById('popupAloneStatus').textContent = 
+                    'もう一度押せます';
+            }, VIBRATION_COOLDOWN);
+        }
+
+        function popupVibrateTogether() {
+            if (!navigator.vibrate) {
+                document.getElementById('popupTogetherStatus').innerHTML = 
+                    'このデバイスは振動機能に対応していません';
+                return;
+            }
+
+            const now = Date.now();
+            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
+                document.getElementById('popupTogetherStatus').innerHTML = 
+                    '少し待ってからもう一度押してください';
+                return;
+            }
+            lastVibrationTime = now;
+
+            const button = document.getElementById('popupTogetherButton');
+            button.disabled = true;
+
+            const pattern = [150, 100, 150];
+            navigator.vibrate(pattern);
+
+            vibrationCount++;
+            document.getElementById('popupTogetherStatus').innerHTML = `
+                <p style="margin-bottom: 20px;">振動しました！（${vibrationCount}回目）</p>
+                <p style="margin-bottom: 20px;"><strong>この体験を友達にも共有 </strong></p>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                    <button onclick="shareToTwitter()" class="button-secondary button" style="margin: 0;">
+                        Xで共有
+                    </button>
+                    <button onclick="shareToLine()" class="button-secondary button" style="margin: 0;">
+                        LINEで共有
+                    </button>
+                    <button onclick="copyLink()" class="button-secondary button" style="margin: 0;">
+                        リンクコピー
+                    </button>
+                </div>
+                <button class="button button-secondary" onclick="closePopup()">
+                    サイトを見る
+                </button>
+            `;
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, VIBRATION_COOLDOWN);
+        }
+
+        // ========================================
+        // 通常の振動機能（元のexperienceセクション用）
+        // ========================================
+        function chooseAlone() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2alone').classList.remove('hidden');
+            document.getElementById('step2together').classList.add('hidden');
+        }
+
+        function chooseTogether() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2alone').classList.add('hidden');
+            document.getElementById('step2together').classList.remove('hidden');
+        }
+
+        function backToStart() {
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('step2alone').classList.add('hidden');
+            document.getElementById('step2together').classList.add('hidden');
+            vibrationCount = 0;
+        }
+
+        function vibrateAlone() {
+            if (!navigator.vibrate) {
+                document.getElementById('aloneStatus').textContent = 
+                    'このデバイスは振動機能に対応していません';
+                return;
+            }
+
+            const now = Date.now();
+            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
+                document.getElementById('aloneStatus').textContent = 
+                    '少し待ってからもう一度押してください';
+                return;
+            }
+            lastVibrationTime = now;
+
+            const button = document.getElementById('aloneButton');
+            button.disabled = true;
+
+            const pattern = [100, 50, 100, 50, 150];
+            navigator.vibrate(pattern);
+
+            vibrationCount++;
+            document.getElementById('aloneStatus').textContent = 
+                `振動しました（${vibrationCount}回目）`;
+
+            setTimeout(() => {
+                button.disabled = false;
+                document.getElementById('aloneStatus').textContent = 
+                    'もう一度押せます';
+            }, VIBRATION_COOLDOWN);
+        }
+
+        function vibrateTogether() {
+            if (!navigator.vibrate) {
+                document.getElementById('togetherStatus').innerHTML = 
+                    'このデバイスは振動機能に対応していません';
+                return;
+            }
+
+            const now = Date.now();
+            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
+                document.getElementById('togetherStatus').innerHTML = 
+                    '少し待ってからもう一度押してください';
+                return;
+            }
+            lastVibrationTime = now;
+
+            const button = document.getElementById('togetherButton');
+            button.disabled = true;
+
+            const pattern = [150, 100, 150];
+            navigator.vibrate(pattern);
+
+            vibrationCount++;
+            document.getElementById('togetherStatus').innerHTML = `
+                <p style="margin-bottom: 20px;">振動しました！（${vibrationCount}回目）</p>
+                <p style="margin-bottom: 20px;"><strong>この体験を友達にも共有 </strong></p>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
+                    <button onclick="shareToTwitter()" class="button-secondary button" style="margin: 0;">
+                        Xで共有
+                    </button>
+                    <button onclick="shareToLine()" class="button-secondary button" style="margin: 0;">
+                        LINEで共有
+                    </button>
+                    <button onclick="copyLink()" class="button-secondary button" style="margin: 0;">
+                        リンクコピー
+                    </button>
+                </div>
+                <button class="button-secondary button" onclick="backToStart()">
+                    最初に戻る
+                </button>
+            `;
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, VIBRATION_COOLDOWN);
+        }
+// ============================================
+// 振動機能
+// ============================================
+
+// 振動APIが使えるかチェック
+function canVibrate() {
+    return "vibrate" in navigator;
+}
+
+// ステータス表示ヘルパー
+function setStatus(id, message) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = message;
+}
+
+// ひとり体験（自分の輪郭をなぞる短い2拍）
+function vibrateAlone() {
+    if (!canVibrate()) {
+        setStatus("aloneStatus", "この端末では振動が使えません");
+        return;
+    }
+    navigator.vibrate([120, 80, 120]);
+    setStatus("aloneStatus", "いまの揺れ、どこで感じましたか？");
+}
+
+// いっしょ体験（渡す→待つ→返る、の3フレーズ）
+function vibrateTogether() {
+    if (!canVibrate()) {
+        setStatus("togetherStatus", "この端末では振動が使えません");
+        return;
+    }
+    navigator.vibrate([160, 90, 160, 250, 80, 250]);
+    setStatus("togetherStatus", "誰かと一緒だと、揺れの意味は変わる？");
+}
+
+// ポップアップ版（同じパターンを流用）
+function popupVibrateAlone() {
+    if (!canVibrate()) {
+        setStatus("popupAloneStatus", "この端末では振動が使えません");
+        return;
+    }
+    navigator.vibrate([120, 80, 120]);
+    setStatus("popupAloneStatus", "身体のどこで感じた？");
+}
+
+function popupVibrateTogether() {
+    if (!canVibrate()) {
+        setStatus("popupTogetherStatus", "この端末では振動が使えません");
+        return;
+    }
+    navigator.vibrate([160, 90, 160, 250, 80, 250]);
+    setStatus("popupTogetherStatus", "隣の人とタイミングを合わせてみて");
+}
+
+        // ========================================
+        // 共有機能
+        // ========================================
+        function shareToTwitter() {
+            const text = '振動は表現になるか？新しい表現の可能性を探る実験プロジェクト ';
+            const url = window.location.href;
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(twitterUrl, '_blank');
+        }
+
+        function shareToLine() {
+            const text = '振動は表現になるか？新しい表現の可能性を探る実験プロジェクト ';
+            const url = window.location.href;
+            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(text + ' ' + url)}`;
+            window.open(lineUrl, '_blank');
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('リンクコピー完了　誰かに送って振動体験を共有しよう ');
+            }).catch(() => {
+                prompt('このリンクをコピーして誰かに送ってください:', url);
+            });
+        }
+
+        // ========================================
+        // メニュー機能
+        // ========================================
+        let isJapanese = true;
+        let isMenuOpen = false;
+        
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            const nav = document.getElementById('main-nav');
+            const btn = document.getElementById('menuBtn');
+            
+            if (isMenuOpen) {
+                nav.hidden = false;
+                btn.setAttribute('aria-expanded', 'true');
+                btn.setAttribute('aria-label', 'メニューを閉じる');
+                btn.querySelector('.menu-text').textContent = '閉じる';
+            } else {
+                nav.hidden = true;
+                btn.setAttribute('aria-expanded', 'false');
+                btn.setAttribute('aria-label', 'メニューを開く');
+                btn.querySelector('.menu-text').textContent = 'メニュー';
+            }
+        }
+        
+        function closeMenu() {
+            if (isMenuOpen) {
+                toggleMenu();
+            }
+        }
+
+   // ========================================
+        // 言語切り替え
+        // ========================================
+        function toggleLanguage() {
+            isJapanese = !isJapanese;
+            
+            if (isJapanese) {
+                // 日本語に切り替え
+                document.getElementById('langText').textContent = 'EN';
+                document.getElementById('langBtn').setAttribute('aria-label', '言語を切り替える。現在：日本語');
+                
+                
+                // ポップアップ言語ボタン（追加）
+    document.getElementById('popupLangText').textContent = 'EN';
+    document.getElementById('popupLangBtn').setAttribute('aria-label', '言語を切り替える。現在：日本語');
+    
+                // ヘッダー
+                document.querySelector('.subtitle').textContent = '「令和8年度日本大学自主創造プロジェクト 日大生のやってみたいを実現するプロジェクト」申請予定';
+                
+                // ポップアップ
+                document.querySelector('.popup-header h2').textContent = 'まず 振動を体験';
+                document.querySelector('.popup-content .warning-box h3').textContent = '体験前の注意事項';
+                const popupWarningItems = document.querySelectorAll('.popup-content .warning-box li');
+                popupWarningItems[0].textContent = '・一部の古い端末では動作しません';
+                popupWarningItems[1].textContent = '・不快感を感じたら中止してください';
+                
+                // ステップ1
+                document.querySelector('#popup-step1 .tagline').textContent = '揺れる';
+                document.querySelector('#popup-step1 > p').textContent = '一人でも　誰かと一緒でも';
+                document.querySelector('#popup-step1 .choice-button:nth-of-type(1) strong').textContent = '一人で体験する';
+                document.querySelector('#popup-step1 .choice-button:nth-of-type(2) strong').textContent = '誰かと一緒に体験する';
+                
+                // ステップ2（一人）
+                document.querySelector('#popup-step2alone .tagline .tre').textContent = '振動を感じる';
+                document.querySelector('#popup-step2alone > p .tre').textContent = '自分で起こして自分に伝える';
+                document.getElementById('popupAloneStatus').textContent = 'ボタンを押してください';
+                const aloneItalic = document.querySelector('#popup-step2alone p[style*="italic"]');
+                if (aloneItalic) aloneItalic.innerHTML = 'この振動どのように伝わった？<br>';
+                const aloneButtons = document.querySelectorAll('#popup-step2alone .button');
+                if (aloneButtons[0]) aloneButtons[0].textContent = '誰かと共有してみる';
+                if (aloneButtons[1]) aloneButtons[1].textContent = '最初に戻る';
+                
+                // ステップ3（一緒）
+                document.querySelector('#popup-step2together .tagline').textContent = 'この振動体験を共有';
+                document.querySelector('#popup-step2together > p').innerHTML = 'ボタンを押して振動を体験<br>そして誰かにも振動を届ける<br>';
+                document.getElementById('popupTogetherStatus').textContent = 'ボタンを押してください';
+                
+                // ナビゲーション
+                const navLinks = document.querySelectorAll('.main-nav a');
+                navLinks[0].textContent = 'この企画について';
+                navLinks[1].textContent = 'メンバー募集概要';
+                navLinks[2].textContent = '応募フォーム'
+                // aboutセクション
+                document.getElementById('about-heading').textContent = 'この企画について';
+                const importantBox = document.querySelector('#about .important-box');
+                importantBox.innerHTML = `
+                    <p><strong>表現をみんなに</strong></p>
+                    <p>振動そのものは、独立した表現手段になるのか？<br>
+                    生きている身体 すべてが参画できる芸術の可能性を探ります。</p>
+                `;
+                
+                const aboutColumns = document.querySelectorAll('#about .column-item');
+                aboutColumns[0].innerHTML = `
+                    <h3>企画概要</h3>
+                    <p>　芸術は、ある感覚では受け取りにくい人に対して、その表現を別の感覚へ置き換えることで共有されている。その変換の過程では、新たな価値が生まれたり逆に失われたりする可能性がある。その変化は興味深い。しかし、その体験は元の表現とは異なるものを受け取るものになる。</p>
+                    <p>　そこで、本企画では誰もが直接参加できる表現として振動に注目する。振動は骨伝導や触覚によって伝わり、生きる誰もが心拍によって発生させている。<br>
+                    　はたして振動は表現になるか？振動を他の何かの変化ではなく、表現方法自体にすることで、今までとは違う"万人に向けたダイレクトな表現"が可能になると考える。</p>
+                `;
+                aboutColumns[1].innerHTML = `
+                    <h3>やりたいこと</h3>
+                    <ul>
+                        <li>振動空間の制作（会場そのものを表現装置にする）</li>
+                        <li>振動による表現の創案（例：演奏・描画・パフォーマンスなどの振動版）</li>
+                        <li>身体障害を持つ人を含むメンバーへの体験実験とフィードバック</li>
+                        <li>「振動芸術」という新ジャンルの提示と検証</li>
+                    </ul>
+                `;
+                
+                // recruitmentセクション
+                document.getElementById('recruitment-heading').textContent = '一緒に実験するメンバーを募集しています';
+                document.querySelector('#recruitment .important-box').innerHTML = `
+                    <p><strong>同じ方向を向いてくれる全ての日大生を歓迎します。また、学外の方も大歓迎です。<br>不定期の参加も大歓迎です。</strong></p>
+                    <p style="margin-top: 20px;">
+                        <a href="./メンバー募集のための説明書.pdf" class="button" download aria-label="メンバー募集説明書PDFをダウンロード">
+                            📄 詳しい説明書をダウンロード（PDF）
+                        </a>
+                    </p>
+                `;
+                
+                const recruitColumns = document.querySelectorAll('#recruitment .column-item.emphasis');
+                recruitColumns[0].innerHTML = `
+                    <h3><span class="highlight-text">特に以下の分野に関心がある方</span></h3>
+                    <ul>
+                        <li><strong>理工学部（建築・情報工学）：</strong>空間設計、振動測定、データ分析</li>
+                        <li><strong>文理学部（社会学・心理学）：</strong>実験設計、インクルージョンの視点</li>
+                        <li><strong>工学部：</strong>装置制作、ものづくり</li>
+                        <li><strong>芸術学部：</strong>パフォーマンス、映像記録、デザイン</li>
+                        <li><strong>その他全学部：</strong>新しい表現に関心がある人、誰でも歓迎</li>
+                    </ul>
+                `;
+                recruitColumns[1].innerHTML = `
+                    <h3><span class="highlight-text">こんな経験ができます</span></h3>
+                    <ul>
+                        <li>実験的プロジェクト</li>
+                        <li>学部を超えた協働体験</li>
+                        <li>企画・制作・発表の一連の流れ</li>
+                        <li>ポートフォリオ・就職活動の話題になる実績</li>
+                        <li>社会に開かれた活動（成果の公開・発信）</li>
+                    </ul>
+                `;
+                
+                // infoセクション
+                document.getElementById('info-heading').textContent = 'プロジェクト情報';
+                document.querySelector('#info .content-box').innerHTML = `
+                    <dl>
+                        <dt><strong>応募先</strong></dt>
+                        <dd>令和8年度日本大学自主創造プロジェクト 日大生のやってみたいを実現するプロジェクト<br>
+                        <a href="https://www.nihon-u.ac.jp/about/students_first/cooperation/">https://www.nihon-u.ac.jp/about/students_first/cooperation/</a></dd>
+                        <dt><strong>助成金</strong></dt>
+                        <dd>最大100万円</dd>
+                        <dt><strong>活動期間</strong></dt>
+                        <dd>2026年4月から2027年3月まで</dd>
+                        <dt><strong>必要なメンバー数</strong></dt>
+                        <dd>5名以上、2学部以上</dd>
+                    </dl>
+                `;
+                
+                // contactセクション
+                document.getElementById('contact-heading').textContent = '興味がある方、ご連絡ください';
+                document.querySelector('#contact > p').innerHTML = 'まずはお気軽に。質問だけでもOKです。<br>以下のフォームまたは直接連絡でどうぞ。';
+                
+                // フォーム
+                document.querySelector('label[for="name"]').innerHTML = 'お名前 <span class="required" aria-label="必須">*</span>';
+                document.querySelector('label[for="department"]').innerHTML = '学部・学年 <span class="required" aria-label="必須">*</span>';
+                document.getElementById('department').placeholder = '例：理工学部 2年';
+                document.querySelector('label[for="email"]').innerHTML = 'メールアドレス <span class="required" aria-label="必須">*</span>';
+                document.querySelector('label[for="interest"]').textContent = '興味のある役割・分野（任意）';
+                
+                const interestSelect = document.getElementById('interest');
+                interestSelect.options[0].text = '選択してください';
+                interestSelect.options[1].text = '空間設計・建築';
+                interestSelect.options[2].text = '装置制作・工学';
+                interestSelect.options[3].text = 'データ分析・測定';
+                interestSelect.options[4].text = '実験設計・社会学・心理学';
+                interestSelect.options[5].text = 'パフォーマンス・芸術表現';
+                interestSelect.options[6].text = '映像・記録・広報';
+                interestSelect.options[7].text = 'インクルージョン・アクセシビリティ';
+                interestSelect.options[8].text = 'その他';
+                
+                document.querySelector('label[for="message"]').textContent = 'メッセージ・質問（任意）';
+                document.getElementById('message').placeholder = '興味を持った理由、質問、やってみたいことなど、自由にどうぞ';
+                document.querySelector('#contactForm .button').textContent = '送信';
+                
+                document.querySelector('#contact .contact-box h3').textContent = '直接連絡する場合';
+                document.querySelector('#contact .contact-box p').innerHTML = `
+                    <strong>メール：</strong><a href="mailto:arsa23085@g.nihon-u.ac.jp">arsa23085@g.nihon-u.ac.jp</a><br>
+                    担当：本間（芸術学部3年）
+                `;
+                
+                // facultyセクション
+                document.getElementById('faculty-heading').textContent = '教員の方へ';
+                document.querySelector('#faculty .content-box').innerHTML = `
+                    <p>このプロジェクトは、インクルーシブデザイン、実験音楽、触覚芸術など、複数の領域にまたがる学際的な試みです。</p>
+                    <p>ご助言、ご協力いただける教員の方がいらっしゃいましたら、ぜひご連絡ください。</p>
+                `;
+              
+    
+                // フッター
+                document.querySelector('footer p:first-child').innerHTML = '<strong><span class="vib">VIBRATORY</span> EXPRESSION LAB <br><span class="vib">振動</span>は表現になるか？</strong>';
+                document.querySelector('footer p:nth-of-type(2)').textContent = '「令和8年度日本大学自主創造プロジェクト 日大生のやってみたいを実現するプロジェクト」申請予定';
+                document.querySelector('footer .note').innerHTML = '※本プロジェクトは申請予定であり、採択を保証するものではありません<br>※日本大学の公認を示すものではありません';
+                
+                // メニューボタン
+                if (!isMenuOpen) {
+                    document.querySelector('.menu-text').textContent = 'メニュー';
+                } else {
+                    document.querySelector('.menu-text').textContent = '閉じる';
+                }
+                
+                // フォントサイズを日本語用に戻す
+                document.body.classList.remove('english-mode');
+                
+            } else {
+                // 英語に切り替え
+                document.getElementById('langText').textContent = '日本語';
+                document.getElementById('langBtn').setAttribute('aria-label', 'Switch language. Current: English');
+                // ポップアップ言語ボタン（追加）
+    document.getElementById('popupLangText').textContent = '日本語';
+    document.getElementById('popupLangBtn').setAttribute('aria-label', 'Switch language. Current: English');
+    
+                // ヘッダー
+                document.querySelector('.subtitle').textContent = 'Planning to apply for FY2026 Nihon University "Jishu-Sozo" (Independent Creation) Project';
+                
+                // ポップアップ
+                document.querySelector('.popup-header h2').textContent = 'First, Experience Vibration';
+                document.querySelector('.popup-content .warning-box h3').textContent = 'Important Notes Before Experiencing';
+                const popupWarningItems = document.querySelectorAll('.popup-content .warning-box li');
+                popupWarningItems[0].textContent = '・May not work on some older devices';
+                popupWarningItems[1].textContent = '・Stop if you feel any discomfort';
+                
+                // ステップ1
+                document.querySelector('#popup-step1 .tagline').textContent = 'Vibrate';
+                document.querySelector('#popup-step1 > p').textContent = 'Alone or together';
+                document.querySelector('#popup-step1 .choice-button:nth-of-type(1) strong').textContent = 'Experience Alone';
+                document.querySelector('#popup-step1 .choice-button:nth-of-type(2) strong').textContent = 'Experience Together';
+                
+                // ステップ2（一人）
+                document.querySelector('#popup-step2alone .tagline .tre').textContent = 'Feel the Vibration';
+                document.querySelector('#popup-step2alone > p .tre').textContent = 'Generate it yourself, transmit it to yourself';
+                document.getElementById('popupAloneStatus').textContent = 'Please press the button';
+                const aloneItalic = document.querySelector('#popup-step2alone p[style*="italic"]');
+                if (aloneItalic) aloneItalic.innerHTML = 'How was this vibration transmitted?<br>';
+                const aloneButtons = document.querySelectorAll('#popup-step2alone .button');
+                if (aloneButtons[0]) aloneButtons[0].textContent = 'Share with someone';
+                if (aloneButtons[1]) aloneButtons[1].textContent = 'Back to Start';
+                
+                // ステップ3（一緒）
+                document.querySelector('#popup-step2together .tagline').textContent = 'Share This Vibration Experience';
+                document.querySelector('#popup-step2together > p').innerHTML = 'Press the button to feel the vibration,<br>then share it with others<br>';
+                document.getElementById('popupTogetherStatus').textContent = 'Please press the button';
+                
+                // ナビゲーション
+                const navLinks = document.querySelectorAll('.main-nav a');
+                navLinks[0].textContent = 'About';
+                navLinks[1].textContent = 'Join Us';
+                navLinks[2].textContent = 'Contact';
+                // aboutセクション
+                document.getElementById('about-heading').textContent = 'About This Project';
+                const importantBox = document.querySelector('#about .important-box');
+                importantBox.innerHTML = `
+                    <p><strong>Expression for Everyone</strong></p>
+                    <p>Can vibration itself become an independent means of expression?<br>
+                    We explore the possibilities of art in which all living bodies can participate.</p>
+                `;
+                
+                const aboutColumns = document.querySelectorAll('#about .column-item');
+                aboutColumns[0].innerHTML = `
+                    <h3>Project Overview</h3>
+                    <p>Art is often shared with those who have difficulty utilizing specific senses by translating expressions into different sensory modalities. While this process is intriguing and can create new value, elements may also be lost; the resulting experience inevitably differs from the original expression.</p>
+                    <p>Therefore, this project focuses on vibration as a form of expression that anyone can participate in directly. Vibration is transmitted through bone conduction and touch, and is inherently generated by the heartbeat of every living being.<br>
+                    Can vibration truly become art? By treating vibration not as a substitute for another sense, but as the medium itself, we believe a new, "direct expression for everyone" becomes possible.</p>
+                `;
+                aboutColumns[1].innerHTML = `
+                    <h3>What We Aim to Do</h3>
+                    <ul>
+                        <li>Creating a "Vibration Space" (Turning the venue itself into a device for expression)</li>
+                        <li>Devising expressions through vibration (e.g., vibration-based versions of music, drawing, and performance)</li>
+                        <li>Conducting experiments and gathering feedback with participants, including those with physical disabilities</li>
+                        <li>Proposing and verifying a new genre: "Vibration Art"</li>
+                    </ul>
+                `;
+                
+                // recruitmentセクション
+                document.getElementById('recruitment-heading').textContent = 'We are looking for members to experiment with us';
+                document.querySelector('#recruitment .important-box').innerHTML = `
+                    <p><strong>We welcome all Nihon University students who share our vision. People from outside the university are also highly welcome.<br>Flexible participation is also welcome.</strong></p>
+                    <p style="margin-top: 20px;">
+                        <a href="./メンバー募集のための説明書.pdf" class="button" download aria-label="Download detailed guide PDF">
+                            📄 Download Detailed Guide (PDF)
+                        </a>
+                    </p>
+                `;
+                
+                const recruitColumns = document.querySelectorAll('#recruitment .column-item.emphasis');
+                recruitColumns[0].innerHTML = `
+                    <h3><span class="highlight-text">Especially those interested in the following fields</span></h3>
+                    <ul>
+                        <li><strong>College of Science and Technology (Architecture / Information Engineering):</strong> Spatial design, vibration measurement, data analysis</li>
+                        <li><strong>College of Humanities and Sciences (Sociology / Psychology):</strong> Experimental design, perspectives on inclusion</li>
+                        <li><strong>College of Engineering:</strong> Device fabrication, prototyping/making</li>
+                        <li><strong>College of Art:</strong> Performance, video documentation, design</li>
+                        <li><strong>All Other Faculties:</strong> Anyone interested in new forms of expression is welcome!</li>
+                    </ul>
+                `;
+                recruitColumns[1].innerHTML = `
+                    <h3><span class="highlight-text">What You Will Gain</span></h3>
+                    <ul>
+                        <li>Experimental Project Experience</li>
+                        <li>Cross-Faculty Collaboration</li>
+                        <li>Complete Creative Process</li>
+                        <li>Career Building (Portfolio & Job Hunting)</li>
+                        <li>Social Impact (Public exhibitions and dissemination)</li>
+                    </ul>
+                `;
+                
+                // infoセクション
+                document.getElementById('info-heading').textContent = 'Project Information';
+                document.querySelector('#info .content-box').innerHTML = `
+                    <dl>
+                        <dt><strong>Program Name</strong></dt>
+                        <dd>FY2026 Nihon University "Jishu-Sozo" (Independent Creation) Project<br>
+                        <a href="https://www.nihon-u.ac.jp/about/students_first/cooperation/">https://www.nihon-u.ac.jp/about/students_first/cooperation/</a></dd>
+                        <dt><strong>Grant Amount</strong></dt>
+                        <dd>Up to 1,000,000 JPY</dd>
+                        <dt><strong>Project Period</strong></dt>
+                        <dd>April 2026 – March 2027</dd>
+                        <dt><strong>Required Members</strong></dt>
+                        <dd>5 or more members, spanning 2 or more colleges</dd>
+                    </dl>
+                `;
+                
+                // contactセクション
+                document.getElementById('contact-heading').textContent = 'Interested? Get in Touch';
+                document.querySelector('#contact > p').innerHTML = 'Feel free to reach out. Questions are just as welcome as applications.<br>Please use the form below or contact us directly.';
+                
+                // フォーム
+                document.querySelector('label[for="name"]').innerHTML = 'Name <span class="required" aria-label="required">*</span>';
+                document.querySelector('label[for="department"]').innerHTML = 'College / Year <span class="required" aria-label="required">*</span>';
+                document.getElementById('department').placeholder = 'e.g., College of Science and Technology, 2nd year';
+                document.querySelector('label[for="email"]').innerHTML = 'Email Address <span class="required" aria-label="required">*</span>';
+                document.querySelector('label[for="interest"]').textContent = 'Role/Field of Interest (Optional)';
+                
+                const interestSelect = document.getElementById('interest');
+                interestSelect.options[0].text = 'Please select';
+                interestSelect.options[1].text = 'Spatial Design / Architecture';
+                interestSelect.options[2].text = 'Device Creation / Engineering';
+                interestSelect.options[3].text = 'Data Analysis / Measurement';
+                interestSelect.options[4].text = 'Experimental Design / Sociology / Psychology';
+                interestSelect.options[5].text = 'Performance / Artistic Expression';
+                interestSelect.options[6].text = 'Video / Documentation / PR';
+                interestSelect.options[7].text = 'Inclusion / Accessibility';
+                interestSelect.options[8].text = 'Other';
+                
+                document.querySelector('label[for="message"]').textContent = 'Message / Questions (Optional)';
+                document.getElementById('message').placeholder = 'Feel free to share why you\'re interested, questions, or what you\'d like to try';
+                document.querySelector('#contactForm .button').textContent = 'Submit';
+                
+                document.querySelector('#contact .contact-box h3').textContent = 'For Direct Contact';
+                document.querySelector('#contact .contact-box p').innerHTML = `
+                    <strong>Email:</strong> <a href="mailto:arsa23085@g.nihon-u.ac.jp">arsa23085@g.nihon-u.ac.jp</a><br>
+                    Attn: Homma (junior,College of Art
+                `;
+                
+                // facultyセクション
+                document.getElementById('faculty-heading').textContent = 'For Faculty Members';
+                document.querySelector('#faculty .content-box').innerHTML = `
+                    <p>This project is an interdisciplinary initiative spanning multiple fields, including Engineering, Inclusive Design, and Art Studies.</p>
+                    <p>We would greatly appreciate hearing from any faculty members interested in providing advice or collaboration. Please feel free to contact us.</p>
+                `;
+                
+                // フッター
+                document.querySelector('footer p:first-child').innerHTML = '<strong><span class="vib">VIBRATORY</span> EXPRESSION LAB <br>Can <span class="vib">Vibration</span> Become a Form of Expression?</strong>';
+                document.querySelector('footer p:nth-of-type(2)').textContent = 'Planning to apply for FY2026 Nihon University "Jishu-Sozo" (Independent Creation) Project';
+                document.querySelector('footer .note').innerHTML = '*This project is currently in the application planning stage; acceptance is not guaranteed.<br>*This does not represent an officially recognized activity of Nihon University.';
+                
+                // メニューボタン
+                if (!isMenuOpen) {
+                    document.querySelector('.menu-text').textContent = 'Menu';
+                } else {
+                    document.querySelector('.menu-text').textContent = 'Close';
+                }
+                
+                // 英語用にフォントサイズを調整
+                document.body.classList.add('english-mode');
+            }
+        }
+        // ========================================
+        // マーカーアニメーション（スクロール検知）
+        // ========================================
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const highlights = entry.target.querySelectorAll('.highlight-text');
+                    highlights.forEach((highlight, index) => {
+                        setTimeout(() => {
+                            highlight.classList.add('animate');
+                        }, index * 200);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('[data-animate="marker"]');
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+     // ========================================
+        // 見出しのスクロールアニメーション
+        // ========================================
+        const headingObserverOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const headingObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    headingObserver.unobserve(entry.target);
+                }
+            });
+        }, headingObserverOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // すべてのh2要素を監視
+            const headings = document.querySelectorAll('h2');
+            headings.forEach(heading => {
+                headingObserver.observe(heading);
+            });
+        });
+
+        // ========================================
+        // フォーム送信
+        // ========================================
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formStatus = document.getElementById('formStatus');
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            
+            submitButton.disabled = true;
+            submitButton.textContent = '送信中...';
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            setTimeout(() => {
+                formStatus.innerHTML = `
+                    <div class="success-message">
+                        送信完了しました。近日中に連絡いたします。
+                    </div>
+                `;
+                
+                submitButton.textContent = '送信済み';
+                event.target.reset();
+                formStatus.setAttribute('aria-live', 'assertive');
+            }, 2000);
+        });
+    </script>
+          </body>
+</html>
+  

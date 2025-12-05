@@ -1,0 +1,1298 @@
+/* ============================================
+   白黒＋青アクセント版 - スマホ対応
+   ============================================ */
+
+/* 基本リセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'UD デジタル 教科書体 N-R', 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #000000;
+    background-color: #ffffff;
+}
+@media (min-width: 769px) {
+    body {
+        font-size: 20px;
+        line-height: 2;
+    }
+}
+
+/* コンテンツを中央に配置するコンテナ */
+.content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+@media (min-width: 769px) {
+    .content-wrapper {
+        padding: 0 30px;
+    }
+}
+
+/* 縦ライン - PCのみ */
+body::before {
+    display: none;
+}
+@media (min-width: 769px) {
+    body::before {
+        content: '';
+        display: block;
+        position: fixed;
+        left: 30px;
+        top: 0;
+        width: 8px;
+        height: 100vh;
+        background: linear-gradient(to bottom, #000 0%, #666 25%, #999 50%, #666 75%, #000 100%);
+        border-radius: 4px;
+        z-index: 9999;
+        pointer-events: none;
+    }
+}
+
+/* スキップリンク */
+.skip-link {
+    display: none;
+}
+
+/* ============================================
+   ヘッダー（背景を端まで）
+   ============================================ */
+header {
+    background-color: #f0f0f0;
+    border-bottom: 2px solid #333;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+@media (min-width: 769px) {
+    header {
+        padding: 30px 0;
+        margin-bottom: 60px;
+    }
+}
+
+.header-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+@media (min-width: 769px) {
+    .header-container {
+        padding: 0 30px;
+    }
+}
+
+/* ヘッダー内のテキスト要素もコンテナで包む */
+header .tagline,
+header .subtitle {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px;
+}
+@media (min-width: 769px) {
+    header .tagline,
+    header .subtitle {
+        padding: 0 30px;
+    }
+}
+
+/* ナビゲーションもコンテナで包む */
+.main-nav {
+    max-width: 1000px;
+    margin: 20px auto 0 auto;
+    padding: 0 15px;
+}
+@media (min-width: 769px) {
+    .main-nav {
+        padding: 0 30px;
+    }
+}
+
+/* 見出し */
+h1 {
+    font-size: 24px;
+    line-height: 1.3;
+    word-break: break-word;
+    margin: 0;
+}
+@media (min-width: 769px) {
+    h1 {
+        font-size: 60px;
+    }
+}
+@media (min-width: 1025px) {
+    h1 {
+        font-size: 90px;
+    }
+}
+
+.vib {
+    color: #0066cc;
+}
+
+.orange {
+    color: #0066cc;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.tagline {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+@media (min-width: 769px) {
+    .subtitle {
+        font-size: 16px;
+    }
+}
+
+/* ============================================
+   ヘッダーコントロール
+   ============================================ */
+.header-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.lang-button {
+    background-color: #000;
+    color: white;
+    border: 2px solid #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 50px;
+}
+
+/* メニューボタン */
+.menu-button {
+    background-color: #0066cc;
+    color: white;
+    border: 2px solid #0066cc;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.menu-button:active {
+    background-color: #004499;
+    border-color: #004499;
+    transform: scale(0.98);
+}
+
+.menu-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 16px;
+}
+
+.menu-icon span {
+    display: block;
+    height: 2px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+.menu-button[aria-expanded="true"] .menu-icon span:nth-child(1) {
+    transform: rotate(45deg) translate(4px, 4px);
+}
+
+.menu-button[aria-expanded="true"] .menu-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-button[aria-expanded="true"] .menu-icon span:nth-child(3) {
+    transform: rotate(-45deg) translate(4px, -4px);
+}
+
+/* ============================================
+   ナビゲーション
+   ============================================ */
+.main-nav[hidden] {
+    display: none;
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.main-nav li {
+    margin: 0;
+}
+
+/* ナビゲーションリンク */
+.main-nav a {
+    display: block;
+    padding: 12px 16px;
+    background-color: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    border: 2px solid #0066cc;
+    transition: all 0.2s ease;
+}
+
+.main-nav a:active {
+    background-color: #004499;
+    border-color: #004499;
+    transform: scale(0.98);
+}
+
+/* ============================================
+   メインコンテンツ
+   ============================================ */
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+@media (min-width: 769px) {
+    main {
+        padding: 0 30px;
+    }
+}
+
+/* ============================================
+   セクション
+   ============================================ */
+section {
+    margin-bottom: 40px;
+    padding: 30px 0;
+}
+@media (min-width: 769px) {
+    section {
+        margin-bottom: 60px;
+        padding: 60px 0;
+    }
+}
+
+/* 横ライン */
+section:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 6px;
+    margin-top: 20px;
+    background: linear-gradient(to right, #000 0%, #666 25%, #999 50%, #666 75%, #000 100%);
+    border-radius: 4px;
+}
+
+/* 「このプロジェクトについて」セクション（背景を端まで） */
+#about {
+    background-color: #e6f2ff;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 30px 15px;
+}
+@media (min-width: 769px) {
+    #about {
+        padding: 60px 30px;
+        margin-left: calc((100vw - 1000px) / -2);
+        margin-right: calc((100vw - 1000px) / -2);
+        padding-left: calc((100vw - 1000px) / 2 + 30px);
+        padding-right: calc((100vw - 1000px) / 2 + 30px);
+    }
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #0066cc;
+}
+@media (min-width: 769px) {
+    h2 {
+        font-size: 40px;
+        margin-bottom: 30px;
+    }
+}
+
+h3 {
+    font-size: 18px;
+    margin: 20px 0 10px 0;
+    font-weight: bold;
+}
+@media (min-width: 769px) {
+    h3 {
+        font-size: 20px;
+    }
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+ul, ol {
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+@media (min-width: 769px) {
+    ul, ol {
+        margin-left: 60px;
+    }
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* ============================================
+   ボックス
+   ============================================ */
+.content-box {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #fafafa;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.important-box {
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 3px solid #0066cc;
+    border-radius: 8px;
+}
+
+/* ============================================
+   警告ボックス
+   ============================================ */
+.warning-box {
+    background-color: #f0f0f0;
+    padding: 30px 20px;
+    margin: 30px auto;
+    max-width: 100%;
+    border: 3px solid #333;
+    border-radius: 8px;
+    text-align: center;
+}
+@media (min-width: 769px) {
+    .warning-box {
+        padding: 60px 50px 30px 50px;
+        max-width: 700px;
+        clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+}
+
+.warning-box h3 {
+    color: #000;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.warning-box ul {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 500px;
+}
+
+.warning-box li {
+    margin: 10px 0;
+    color: #000;
+    font-weight: bold;
+}
+
+/* ============================================
+   振動エリア
+   ============================================ */
+.vibration-area {
+    text-align: center;
+    padding: 30px 15px;
+    margin: 30px 0;
+    border: 3px solid #0066cc;
+    border-radius: 12px;
+}
+@media (min-width: 769px) {
+    .vibration-area {
+        padding: 60px 30px;
+        margin: 60px 0;
+    }
+}
+
+.vibration-button {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px 0;
+}
+@media (min-width: 769px) {
+    .vibration-button {
+        width: 200px;
+        height: 200px;
+        font-size: 40px;
+    }
+}
+
+.vibration-button:active:not(:disabled) {
+    transform: scale(0.95);
+    background-color: #004499;
+}
+
+.vibration-button:disabled {
+    background-color: #999;
+    opacity: 0.5;
+}
+
+.vibration-status {
+    min-height: 40px;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+/* ============================================
+   ボタン
+   ============================================ */
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    border: 2px solid #0066cc;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: all 0.2s ease;
+}
+
+.button:active {
+    background-color: #004499;
+    border-color: #004499;
+    transform: scale(0.98);
+}
+
+.button-secondary {
+    background-color: white;
+    border: 2px solid #0066cc;
+    color: #0066cc;
+}
+
+.button-secondary:active {
+    background-color: #f0f0f0;
+    transform: scale(0.98);
+}
+
+.choice-button {
+    padding: 20px;
+    background-color: white;
+    border: 3px solid #0066cc;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    width: 100%;
+    display: block;
+    margin:3px;
+}
+
+.choice-button strong {
+    font-weight: bold;
+}
+
+.choice-button:active {
+    background-color: #f0f0f0;
+    transform: scale(0.98);
+}
+
+/* ポップアップ内の言語切り替えボタン */
+.popup-lang-button {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #000;
+    color: white;
+    border: 2px solid #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 50px;
+    z-index: 10001;
+}
+/* ============================================
+   フォーム
+   ============================================ */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    background-color: white;
+    appearance: none;
+}
+
+textarea {
+    min-height: 120px;
+}
+
+.required {
+    color: #0066cc;
+    font-weight: bold;
+}
+
+/* ============================================
+   2段組
+   ============================================ */
+.two-column-about {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+@media (min-width: 769px) {
+    .two-column-about {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.column-item {
+    padding: 20px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.column-item h3 {
+    margin-top: 0;
+    color: #0066cc;
+}
+/* ============================================
+   マーカーアニメーション
+   ============================================ */
+.highlight-text {
+    position: relative;
+    display: inline;
+    background: linear-gradient(transparent 60%, #ffeb3b 60%);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.8s ease;
+}
+
+.highlight-text.animate {
+    background-size: 100% 100%;
+}
+
+@media (min-width: 769px) {
+    .highlight-text {
+        background: linear-gradient(transparent 65%, #ffeb3b 65%);
+        background-size: 0% 100%;
+        background-repeat: no-repeat;
+    }
+}
+
+/* 強調ボックスのスタイル調整 */
+.column-item.emphasis {
+    border: 3px solid #0066cc;
+    background-color: #f8f9ff;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+}
+
+.column-item.emphasis h3 {
+    font-size: 20px;
+}
+
+@media (min-width: 769px) {
+    .column-item.emphasis h3 {
+        font-size: 24px;
+    }
+}
+
+/* ============================================
+   コンタクトボックス
+   ============================================ */
+.contact-box {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 2px solid #333;
+}
+
+/* ============================================
+   フッター（背景を端まで）
+   ============================================ */
+footer {
+    background-color: #f0f0f0;
+    border-top: 2px solid #333;
+    padding: 20px 0;
+    margin-top: 40px;
+    font-size: 14px;
+}
+@media (min-width: 769px) {
+    footer {
+        padding: 30px 0;
+    }
+}
+
+footer > * {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px;
+}
+@media (min-width: 769px) {
+    footer > * {
+        padding: 0 30px;
+    }
+}
+
+.note {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* ============================================
+   その他
+   ============================================ */
+.hidden {
+    display: none;
+}
+
+.tre {
+    text-align: center;
+}
+
+a {
+    color: #0066cc;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #004499;
+}
+
+.success-message {
+    background-color: #e0e0e0;
+    color: #000;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 2px solid #333;
+}
+/* ============================================
+   波のアニメーション（aboutセクション用）- より目立つ版
+   ============================================ */
+#about {
+    position: relative;
+    overflow: hidden;
+}
+
+#about::before,
+#about::after {
+    content: '';
+    position: absolute;
+    width: 300%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#about::before {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 102, 204, 0.08) 0px,
+        rgba(0, 102, 204, 0.15) 50px,
+        rgba(0, 102, 204, 0.08) 100px
+    );
+    animation: wave1 8s linear infinite;
+}
+
+#about::after {
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(0, 102, 204, 0.05) 0px,
+        rgba(0, 102, 204, 0.12) 60px,
+        rgba(0, 102, 204, 0.05) 120px
+    );
+    animation: wave2 10s linear infinite;
+}
+
+@keyframes wave1 {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    100% {
+        transform: translateX(100px) translateY(50px);
+    }
+}
+
+@keyframes wave2 {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    100% {
+        transform: translateX(-100px) translateY(-50px);
+    }
+}
+
+/* コンテンツを波の上に表示 */
+#about > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* スマホ用：少しゆっくりめに */
+@media (max-width: 768px) {
+    #about::before {
+        animation: wave1 12s linear infinite;
+    }
+    
+    #about::after {
+        animation: wave2 15s linear infinite;
+    }
+}
+/* ============================================
+   振動体験ポップアップ
+   ============================================ */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+.popup-overlay.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.popup-content {
+    background-color: white;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px 20px;
+    position: relative;
+    animation: slideUp 0.4s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #666;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    transition: all 0.2s ease;
+}
+
+.popup-close:hover {
+    background-color: #333;
+    transform: scale(1.1);
+}
+
+.popup-close:active {
+    transform: scale(0.95);
+}
+
+.popup-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.popup-header h2 {
+    font-size: 24px;
+    color: #0066cc;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 769px) {
+    .popup-header h2 {
+        font-size: 32px;
+    }
+}
+
+/* ポップアップ内の警告ボックス調整 */
+.popup-content .warning-box {
+    margin: 20px 0;
+    padding: 20px 15px;
+}
+
+@media (min-width: 769px) {
+    .popup-content .warning-box {
+        clip-path: none;
+        padding: 30px 20px;
+    }
+}
+
+/* ポップアップ内の振動エリア調整 */
+.popup-content .vibration-area {
+    padding: 20px 10px;
+    margin: 20px 0;
+}
+
+/* スクロールバーのスタイル */
+.popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+    background: #0066cc;
+    border-radius: 10px;
+}
+
+.popup-content::-webkit-scrollbar-thumb:hover {
+    background: #004499;
+}
+
+/* 元のexperienceセクションを非表示 */
+#experience {
+    display: none;
+}
+/* ============================================
+   タイトルアニメーション
+   ============================================ */
+.site-logo {
+    opacity: 1;
+    /* 初期表示時のアニメーションを削除 */
+}
+
+/* ポップアップが閉じられた時だけアニメーション */
+.site-logo.popup-closed {
+    animation: slideInFromLeft 0.8s ease forwards, pulse 0.6s ease 0.8s;
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* taglineもポップアップ閉じた後のみ */
+.tagline {
+    opacity: 1;
+    /* 初期表示時のアニメーションを削除 */
+}
+
+.tagline.popup-closed {
+    animation: slideInFromLeft 1s ease forwards;
+    animation-delay: 0.2s;
+}
+
+/* 「振動」の文字を震わせる */
+.orange {
+    display: inline-block;
+    animation: shake 0.5s ease infinite;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    10% {
+        transform: translate(-1px, -1px) rotate(-0.5deg);
+    }
+    20% {
+        transform: translate(1px, 1px) rotate(0.5deg);
+    }
+    30% {
+        transform: translate(-1px, 1px) rotate(-0.5deg);
+    }
+    40% {
+        transform: translate(1px, -1px) rotate(0.5deg);
+    }
+    50% {
+        transform: translate(-1px, 1px) rotate(-0.5deg);
+    }
+    60% {
+        transform: translate(1px, -1px) rotate(0.5deg);
+    }
+    70% {
+        transform: translate(-1px, -1px) rotate(-0.5deg);
+    }
+    80% {
+        transform: translate(1px, 1px) rotate(0.5deg);
+    }
+    90% {
+        transform: translate(-1px, 1px) rotate(-0.5deg);
+    }
+}
+
+/* VIBRATORYの文字も少し動きをつける */
+.vib {
+    display: inline-block;
+    animation: fadeInScale 1s ease forwards;
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+/* ============================================
+   見出しのスクロールアニメーション
+   ============================================ */
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #0066cc;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+@media (min-width: 769px) {
+    h2 {
+        font-size: 40px;
+        margin-bottom: 30px;
+    }
+}
+
+/* アニメーション発火後 */
+h2.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ============================================
+   英語モード用フォントサイズ調整
+   ============================================ */
+body.english-mode {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+@media (min-width: 769px) {
+    body.english-mode {
+        font-size: 18px;
+        line-height: 1.9;
+    }
+}
+
+body.english-mode h1 {
+    font-size: 22px;
+}
+
+@media (min-width: 769px) {
+    body.english-mode h1 {
+        font-size: 55px;
+    }
+}
+
+@media (min-width: 1025px) {
+    body.english-mode h1 {
+        font-size: 80px;
+    }
+}
+
+body.english-mode h2 {
+    font-size: 22px;
+}
+
+@media (min-width: 769px) {
+    body.english-mode h2 {
+        font-size: 36px;
+    }
+}
+
+body.english-mode .tagline {
+    font-size: 26px;
+}
+
+body.english-mode .subtitle {
+    font-size: 13px;
+}
+
+@media (min-width: 769px) {
+    body.english-mode .subtitle {
+        font-size: 14px;
+    }
+}
+/* ============================================
+   波のアニメーション（recruitmentセクション用）- 完全修正版
+   ============================================ */
+#recruitment {
+    position: relative;
+    overflow: hidden;
+    padding: 60px 0;
+    background-color: #ffffff;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+@media (min-width: 769px) {
+    #recruitment {
+        padding: 80px 0;
+        margin-left: calc((100vw - 1000px) / -2);
+        margin-right: calc((100vw - 1000px) / -2);
+        padding-left: calc((100vw - 1000px) / 2 + 30px);
+        padding-right: calc((100vw - 1000px) / 2 + 30px);
+    }
+}
+
+/* キーフレーム定義（最初に定義） */
+@keyframes wave-simple1 {
+    0%, 100% {
+        transform: translateY(0) scaleY(1);
+    }
+    50% {
+        transform: translateY(-15px) scaleY(1);
+    }
+}
+
+@keyframes wave-simple2 {
+    0%, 100% {
+        transform: translateY(0) scaleY(1);
+    }
+    50% {
+        transform: translateY(-10px) scaleY(1);
+    }
+}
+
+@keyframes wave-anime {
+    0% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+    100% {
+        transform: translateX(-50%) rotate(360deg);
+    }
+}
+
+@keyframes wave-anime-reverse {
+    0% {
+        transform: translateX(-50%) rotate(360deg);
+    }
+    100% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+}
+
+/* コンテンツを波の上に表示 */
+#recruitment > * {
+    position: relative;
+    z-index: 1;
+}
+/* スマホ版 - 波の形が見える */
+@media (max-width: 768px) {
+    #recruitment::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,50 Q150,10 300,50 T600,50 T900,50 T1200,50 L1200,120 L0,120 Z' fill='rgba(0,102,204,0.2)'/%3E%3C/svg%3E");
+        background-size: 200% 100%;
+        background-repeat: repeat-x;
+        animation: wave-move1 8s linear infinite;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    #recruitment::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: 130px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 Q200,20 400,60 T800,60 T1200,60 L1200,120 L0,120 Z' fill='rgba(128,208,199,0.15)'/%3E%3C/svg%3E");
+        background-size: 180% 100%;
+        background-repeat: repeat-x;
+        animation: wave-move2 10s linear infinite;
+        animation-direction: reverse;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    @keyframes wave-move1 {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 1200px 0;
+        }
+    }
+    
+    @keyframes wave-move2 {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: -1200px 0;
+        }
+    }
+}
+
+/* PC版 - 回転する波 */
+@media (min-width: 769px) {
+    #recruitment::before {
+        content: '';
+        position: absolute;
+        bottom: -100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 200%;
+        border-radius: 45%;
+        background: linear-gradient(80deg, 
+            rgba(0, 102, 204, 0.15) 0%, 
+            rgba(0, 147, 233, 0.25) 30%,
+            rgba(128, 208, 199, 0.2) 60%, 
+            rgba(255, 255, 255, 0.1) 100%
+        );
+        animation: wave-anime 10s linear infinite;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    #recruitment::after {
+        content: '';
+        position: absolute;
+        bottom: -120%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 220%;
+        border-radius: 48%;
+        background: linear-gradient(120deg, 
+            rgba(0, 102, 204, 0.1) 0%, 
+            rgba(128, 208, 199, 0.15) 50%, 
+            rgba(255, 255, 255, 0.05) 100%
+        );
+        animation: wave-anime-reverse 15s linear infinite;
+        z-index: 0;
+        pointer-events: none;
+    }
+}
