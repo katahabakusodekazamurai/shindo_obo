@@ -718,25 +718,59 @@ function updatePopupLanguage() {
 // 見出しのスクロールアニメーション
 // ========================================
 const headingObserverOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -50px 0px'
+  threshold: 0.2,
+  rootMargin: '0px 0px -50px 0px'
 };
 
 const headingObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-            headingObserver.unobserve(entry.target);
-        }
-    });
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+      headingObserver.unobserve(entry.target);
+    }
+  });
 }, headingObserverOptions);
 
 document.addEventListener('DOMContentLoaded', function() {
-    // 「ポップアップ内の h2」は除外して、本体だけを対象にする
-    
+  // 「ポップアップ内の h2」は除外して、本体だけを対象にする
+  const headings = document.querySelectorAll('h2:not(#popupTitle)');
+  headings.forEach(heading => {
+    headingObserver.observe(heading);
+  });
 });
-</script>
 
+// ========================================
+// フォーム送信 → Google スプレッドシート
+// ========================================
+const scriptURL = 'https://script.google.com/a/macros/g.nihon-u.ac.jp/s/AKfycbwcZ40RLD7eJLLkEdMdAgFbG7aOjSPMOHm9ilFkti7z8-XJDJ_KJNe15fr0uh0m7oo8/exec';
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', function (e) {
+    e.preventDefault(); // ページ遷移を止める
+
+    formStatus.textContent = '送信中です…';
+
+    const formData = new FormData(contactForm);
+
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors', // 簡単な方法。レスポンスは詳細見えないが、送信はされる
+      body: formData
+    })
+    .then(() => {
+      formStatus.textContent = '送信が完了しました。ありがとうございました。';
+      contactForm.reset();
+    })
+    .catch((error) => {
+      console.error('Error!', error);
+      formStatus.textContent = 'エラーが発生しました。時間をおいて再度お試しください。';
+    });
+  });
+}
+</script>
           </body>
 </html>
+
 
