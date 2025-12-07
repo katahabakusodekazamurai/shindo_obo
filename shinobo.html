@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="shinobo.css">
 </head>
 <body>
-  <!-- 振動体験ポップアップ -->
+  
+ <!-- 振動体験ポップアップ -->
 <div id="vibrationPopup" class="popup-overlay">
     <div class="popup-content">
-        <button class="popup-close" onclick="closePopup()" aria-label="閉じる">×</button>
+        <button class="popup-close" onclick="closePopup()">×</button>
         
-        <!-- 言語切り替えボタンを追加 -->
+         <!-- 言語切り替えボタンを追加 -->
         <button 
             id="popupLangBtn" 
             class="popup-lang-button" 
@@ -26,7 +27,7 @@
             <h2>まず 振動を体験</h2>
         </div>
         
-        <div class="warning-box" role="alert">
+        <div class="warning-box">
             <h3>体験前の注意事項</h3>
             <ul>
                 <li>・一部の古い端末では動作しません</li>
@@ -34,76 +35,55 @@
             </ul>
         </div>
         
-        <!-- ステップ1：選択 -->
+        <!-- ステップ1: 振動体験 -->
         <div id="popup-step1" class="vibration-area">
-            <p class="tagline">揺れる</p>
-            <p>一人でも　誰かと一緒でも</p>
-            
-            <div class="choice-buttons">
-                <button class="choice-button" onclick="popupChooseAlone()" aria-label="一人で振動を体験する">
-                    <strong>一人で体験する</strong>
-                </button>
-                <button class="choice-button" onclick="popupChooseTogether()" aria-label="誰かと一緒に振動を体験する">
-                    <strong>誰かと一緒に体験する</strong>
-                </button>
-            </div>
-        </div>
-
-        <!-- ステップ2：一人での体験 -->
-        <div id="popup-step2alone" class="vibration-area hidden">
-            <p class="tagline"><span class="tre">振動を感じる</span></p>
-            <p><span class="tre">自分で起こして自分に伝える</span></p>
+            <p class="tagline">振動を体験</p>
+            <p>ボタンを押して振動を感じてみましょう</p>
             
             <button 
                 class="vibration-button" 
-                id="popupAloneButton"
-                onclick="popupVibrateAlone()"
-                aria-label="振動ボタン。押すとスマートフォンが振動します">
+                id="popupVibrateButton"
+                onclick="popupStartVibration()">
                 〜
             </button>
             
-            <div class="vibration-status" id="popupAloneStatus" role="status" aria-live="polite">
-                ボタンを押してください
-            </div>
-
-            <div style="margin-top: 20px;">
-                <p style="font-style: italic;">
-                    この振動どのように伝わった？<br>
+            <div id="popupVideoContainer" class="vibration-video-container hidden">
+                <!-- 後で動画をここに挿入してください -->
+                <p style="padding: 40px; text-align: center; color: #666;">
+                    (動画をここに追加します)
                 </p>
             </div>
 
-            <div style="margin-top: 15px;">
-                <button class="button-secondary button" onclick="popupChooseTogether()">
-                    誰かと共有してみる
-                </button>
-                <button class="button-secondary button" onclick="popupBackToStart()">
-                    最初に戻る
-                </button>
-            </div>
-        </div>
-
-        <!-- ステップ3：一緒に体験 -->
-        <div id="popup-step2together" class="vibration-area hidden">
-            <p class="tagline">この振動体験を共有</p>
-            <p>
-                ボタンを押して振動を体験<br>
-                そして誰かにも振動を届ける<br>
-            </p>
-            
-            <button 
-                class="vibration-button" 
-                id="popupTogetherButton"
-                onclick="popupVibrateTogether()"
-                aria-label="振動ボタン">
-                〜〜
-            </button>
-            
-            <div class="vibration-status" id="popupTogetherStatus" role="status" aria-live="polite">
+            <div class="vibration-status" id="popupVibrateStatus">
                 ボタンを押してください
             </div>
         </div>
+
+        <!-- ステップ2: 共有画面 -->
+        <div id="popup-step2share" class="vibration-area hidden">
+            <p class="tagline">振動を共有</p>
+            <p>この体験を友達にも届けましょう</p>
+            
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 30px 0;">
+                <button onclick="shareToTwitter()" class="button-secondary button">
+                    Xで共有
+                </button>
+                <button onclick="shareToLine()" class="button-secondary button">
+                    LINEで共有
+                </button>
+                <button onclick="copyLink()" class="button-secondary button">
+                    リンクコピー
+                </button>
+            </div>
+            
+            <button class="button" onclick="closePopup()">
+                サイト本体へ
+            </button>
+        </div>
     </div>
-</div>
+</div>       
+            
+         
     <!-- 以下は既存のコンテンツ -->
    
     <!-- スクリーンリーダー用スキップリンク -->
@@ -215,6 +195,8 @@
                     〜
                 </button>
                 
+                <div id="aloneVideo" class="vibration-video-container hidden"></div>
+
                 <div class="vibration-status" id="aloneStatus" role="status" aria-live="polite">
                     ボタンを押してください
                 </div>
@@ -251,6 +233,9 @@
         〜〜
     </button>
     
+    <div id="togetherVideo" class="vibration-video-container hidden"></div>
+
+
     <div class="vibration-status" id="togetherStatus" role="status" aria-live="polite">
         ボタンを押してください
     </div>
@@ -476,10 +461,10 @@
     </footer>
 
    <script>
-        // ========================================
-        // ポップアップ制御
-        // ========================================
-  function closePopup() {
+   // ========================================
+// ポップアップ制御
+// ========================================
+function closePopup() {
     document.getElementById('vibrationPopup').classList.add('hidden');
     document.body.style.overflow = 'auto';
     
@@ -497,354 +482,153 @@
     }, 1800);
 }
 
-        // ページ読み込み時にポップアップ表示
-        window.addEventListener('load', function() {
-            document.body.style.overflow = 'hidden';
-        });
+// ページ読み込み時にポップアップ表示
+window.addEventListener('load', function() {
+    document.body.style.overflow = 'hidden';
+});
 
-        // Escキーで閉じる（ポップアップとメニュー両方）
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const popup = document.getElementById('vibrationPopup');
-                if (!popup.classList.contains('hidden')) {
-                    closePopup();
-                } else if (isMenuOpen) {
-                    closeMenu();
-                }
-            }
-        });
-
-        // ポップアップ背景クリックで閉じる
-        document.getElementById('vibrationPopup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePopup();
-            }
-        });
-
-        // ========================================
-        // 振動機能の変数
-        // ========================================
-        let lastVibrationTime = 0;
-        const VIBRATION_COOLDOWN = 2000;
-        let vibrationCount = 0;
-
-        // ========================================
-        // ポップアップ用の振動機能
-        // ========================================
-        function popupChooseAlone() {
-            // 注意書きを非表示
-            document.querySelector('.popup-content .warning-box').classList.add('hidden');
-            
-            document.getElementById('popup-step1').classList.add('hidden');
-            document.getElementById('popup-step2alone').classList.remove('hidden');
-            document.getElementById('popup-step2together').classList.add('hidden');
+// Escキーで閉じる（ポップアップとメニュー両方）
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const popup = document.getElementById('vibrationPopup');
+        if (!popup.classList.contains('hidden')) {
+            closePopup();
+        } else if (isMenuOpen) {
+            closeMenu();
         }
+    }
+});
 
-        function popupChooseTogether() {
-            // 注意書きを非表示
-            document.querySelector('.popup-content .warning-box').classList.add('hidden');
-            
-            document.getElementById('popup-step1').classList.add('hidden');
-            document.getElementById('popup-step2alone').classList.add('hidden');
-            document.getElementById('popup-step2together').classList.remove('hidden');
-        }
+// ポップアップ背景クリックで閉じる
+document.getElementById('vibrationPopup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePopup();
+    }
+});
 
-        function popupBackToStart() {
-            // 注意書きを再表示
-            document.querySelector('.popup-content .warning-box').classList.remove('hidden');
-            
-            document.getElementById('popup-step1').classList.remove('hidden');
-            document.getElementById('popup-step2alone').classList.add('hidden');
-            document.getElementById('popup-step2together').classList.add('hidden');
-            vibrationCount = 0;
-        }
+// ========================================
+// 振動機能 - 新実装
+// ========================================
 
-        function popupVibrateAlone() {
-            if (!navigator.vibrate) {
-                document.getElementById('popupAloneStatus').textContent = 
-                    'このデバイスは振動機能に対応していません';
-                return;
-            }
-
-            const now = Date.now();
-            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
-                document.getElementById('popupAloneStatus').textContent = 
-                    '少し待ってからもう一度押してください';
-                return;
-            }
-            lastVibrationTime = now;
-
-            const button = document.getElementById('popupAloneButton');
-            button.disabled = true;
-
-            const pattern = [100, 50, 100, 50, 150];
-            navigator.vibrate(pattern);
-
-            vibrationCount++;
-            document.getElementById('popupAloneStatus').textContent = 
-                `振動しました（${vibrationCount}回目）`;
-
-            setTimeout(() => {
-                button.disabled = false;
-                document.getElementById('popupAloneStatus').textContent = 
-                    'もう一度押せます';
-            }, VIBRATION_COOLDOWN);
-        }
-
-        function popupVibrateTogether() {
-            if (!navigator.vibrate) {
-                document.getElementById('popupTogetherStatus').innerHTML = 
-                    'このデバイスは振動機能に対応していません';
-                return;
-            }
-
-            const now = Date.now();
-            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
-                document.getElementById('popupTogetherStatus').innerHTML = 
-                    '少し待ってからもう一度押してください';
-                return;
-            }
-            lastVibrationTime = now;
-
-            const button = document.getElementById('popupTogetherButton');
-            button.disabled = true;
-
-            const pattern = [150, 100, 150];
-            navigator.vibrate(pattern);
-
-            vibrationCount++;
-            document.getElementById('popupTogetherStatus').innerHTML = `
-                <p style="margin-bottom: 20px;">振動しました！（${vibrationCount}回目）</p>
-                <p style="margin-bottom: 20px;"><strong>この体験を友達にも共有 </strong></p>
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
-                    <button onclick="shareToTwitter()" class="button-secondary button" style="margin: 0;">
-                        Xで共有
-                    </button>
-                    <button onclick="shareToLine()" class="button-secondary button" style="margin: 0;">
-                        LINEで共有
-                    </button>
-                    <button onclick="copyLink()" class="button-secondary button" style="margin: 0;">
-                        リンクコピー
-                    </button>
-                </div>
-                <button class="button button-secondary" onclick="closePopup()">
-                    サイトを見る
-                </button>
-            `;
-
-            setTimeout(() => {
-                button.disabled = false;
-            }, VIBRATION_COOLDOWN);
-        }
-
-        // ========================================
-        // 通常の振動機能（元のexperienceセクション用）
-        // ========================================
-        function chooseAlone() {
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2alone').classList.remove('hidden');
-            document.getElementById('step2together').classList.add('hidden');
-        }
-
-        function chooseTogether() {
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2alone').classList.add('hidden');
-            document.getElementById('step2together').classList.remove('hidden');
-        }
-
-        function backToStart() {
-            document.getElementById('step1').classList.remove('hidden');
-            document.getElementById('step2alone').classList.add('hidden');
-            document.getElementById('step2together').classList.add('hidden');
-            vibrationCount = 0;
-        }
-
-        function vibrateAlone() {
-            if (!navigator.vibrate) {
-                document.getElementById('aloneStatus').textContent = 
-                    'このデバイスは振動機能に対応していません';
-                return;
-            }
-
-            const now = Date.now();
-            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
-                document.getElementById('aloneStatus').textContent = 
-                    '少し待ってからもう一度押してください';
-                return;
-            }
-            lastVibrationTime = now;
-
-            const button = document.getElementById('aloneButton');
-            button.disabled = true;
-
-            const pattern = [100, 50, 100, 50, 150];
-            navigator.vibrate(pattern);
-
-            vibrationCount++;
-            document.getElementById('aloneStatus').textContent = 
-                `振動しました（${vibrationCount}回目）`;
-
-            setTimeout(() => {
-                button.disabled = false;
-                document.getElementById('aloneStatus').textContent = 
-                    'もう一度押せます';
-            }, VIBRATION_COOLDOWN);
-        }
-
-        function vibrateTogether() {
-            if (!navigator.vibrate) {
-                document.getElementById('togetherStatus').innerHTML = 
-                    'このデバイスは振動機能に対応していません';
-                return;
-            }
-
-            const now = Date.now();
-            if (now - lastVibrationTime < VIBRATION_COOLDOWN) {
-                document.getElementById('togetherStatus').innerHTML = 
-                    '少し待ってからもう一度押してください';
-                return;
-            }
-            lastVibrationTime = now;
-
-            const button = document.getElementById('togetherButton');
-            button.disabled = true;
-
-            const pattern = [150, 100, 150];
-            navigator.vibrate(pattern);
-
-            vibrationCount++;
-            document.getElementById('togetherStatus').innerHTML = `
-                <p style="margin-bottom: 20px;">振動しました！（${vibrationCount}回目）</p>
-                <p style="margin-bottom: 20px;"><strong>この体験を友達にも共有 </strong></p>
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
-                    <button onclick="shareToTwitter()" class="button-secondary button" style="margin: 0;">
-                        Xで共有
-                    </button>
-                    <button onclick="shareToLine()" class="button-secondary button" style="margin: 0;">
-                        LINEで共有
-                    </button>
-                    <button onclick="copyLink()" class="button-secondary button" style="margin: 0;">
-                        リンクコピー
-                    </button>
-                </div>
-                <button class="button-secondary button" onclick="backToStart()">
-                    最初に戻る
-                </button>
-            `;
-
-            setTimeout(() => {
-                button.disabled = false;
-            }, VIBRATION_COOLDOWN);
-        }
-// ============================================
-// 振動機能
-// ============================================
-
-// 振動APIが使えるかチェック
+// 振動API対応チェック
 function canVibrate() {
     return "vibrate" in navigator;
 }
 
-// ステータス表示ヘルパー
-function setStatus(id, message) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = message;
-}
-
-// ひとり体験（自分の輪郭をなぞる短い2拍）
-function vibrateAlone() {
-    if (!canVibrate()) {
-        setStatus("aloneStatus", "この端末では振動が使えません");
-        return;
-    }
-    navigator.vibrate([120, 80, 120]);
-    setStatus("aloneStatus", "いまの揺れ、どこで感じましたか？");
-}
-
-// いっしょ体験（渡す→待つ→返る、の3フレーズ）
-function vibrateTogether() {
-    if (!canVibrate()) {
-        setStatus("togetherStatus", "この端末では振動が使えません");
-        return;
-    }
-    navigator.vibrate([160, 90, 160, 250, 80, 250]);
-    setStatus("togetherStatus", "誰かと一緒だと、揺れの意味は変わる？");
-}
-
-// ポップアップ版（同じパターンを流用）
-function popupVibrateAlone() {
-    if (!canVibrate()) {
-        setStatus("popupAloneStatus", "この端末では振動が使えません");
-        return;
-    }
-    navigator.vibrate([120, 80, 120]);
-    setStatus("popupAloneStatus", "身体のどこで感じた？");
-}
-
-function popupVibrateTogether() {
-    if (!canVibrate()) {
-        setStatus("popupTogetherStatus", "この端末では振動が使えません");
-        return;
-    }
-    navigator.vibrate([160, 90, 160, 250, 80, 250]);
-    setStatus("popupTogetherStatus", "隣の人とタイミングを合わせてみて");
-}
-
-        // ========================================
-        // 共有機能
-        // ========================================
-        function shareToTwitter() {
-            const text = '振動は表現になるか？新しい表現の可能性を探る実験プロジェクト ';
-            const url = window.location.href;
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-            window.open(twitterUrl, '_blank');
-        }
-
-        function shareToLine() {
-            const text = '振動は表現になるか？新しい表現の可能性を探る実験プロジェクト ';
-            const url = window.location.href;
-            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(text + ' ' + url)}`;
-            window.open(lineUrl, '_blank');
-        }
-
-        function copyLink() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                alert('リンクコピー完了　誰かに送って振動体験を共有しよう ');
-            }).catch(() => {
-                prompt('このリンクをコピーして誰かに送ってください:', url);
-            });
-        }
-
-        // ========================================
-        // メニュー機能
-        // ========================================
-        let isJapanese = true;
-        let isMenuOpen = false;
+// ポップアップでの振動開始
+function popupStartVibration() {
+    const button = document.getElementById('popupVibrateButton');
+    const statusEl = document.getElementById('popupVibrateStatus');
+    const videoContainer = document.getElementById('popupVideoContainer');
+    
+    button.disabled = true;
+    
+    if (canVibrate()) {
+        // 振動API対応端末: 振動実行
+        statusEl.textContent = '振動中...';
         
-        function toggleMenu() {
-            isMenuOpen = !isMenuOpen;
-            const nav = document.getElementById('main-nav');
-            const btn = document.getElementById('menuBtn');
+        // 5秒間のリズミカルな振動
+        navigator.vibrate([
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 200,
+            80, 60, 80, 0
+        ]);
+        
+        setTimeout(() => {
+            // 共有画面へ移動
+            document.getElementById('popup-step1').classList.add('hidden');
+            document.getElementById('popup-step2share').classList.remove('hidden');
+        }, 5000);
+        
+    } else {
+        // 振動API非対応端末: 画面揺らし→動画
+        statusEl.textContent = '画面が揺れます...';
+        
+        // ポップアップ全体を揺らす
+        const popupContent = document.querySelector('.popup-content');
+        popupContent.classList.add('shake-screen');
+        
+        setTimeout(() => {
+            popupContent.classList.remove('shake-screen');
             
-            if (isMenuOpen) {
-                nav.hidden = false;
-                btn.setAttribute('aria-expanded', 'true');
-                btn.setAttribute('aria-label', 'メニューを閉じる');
-                btn.querySelector('.menu-text').textContent = '閉じる';
-            } else {
-                nav.hidden = true;
-                btn.setAttribute('aria-expanded', 'false');
-                btn.setAttribute('aria-label', 'メニューを開く');
-                btn.querySelector('.menu-text').textContent = 'メニュー';
-            }
-        }
-        
-        function closeMenu() {
-            if (isMenuOpen) {
-                toggleMenu();
-            }
-        }
+            // 動画コンテナを表示
+            videoContainer.classList.remove('hidden');
+            statusEl.textContent = '振動のイメージをご覧ください';
+            
+            // 3秒後に共有画面へ
+            setTimeout(() => {
+                document.getElementById('popup-step1').classList.add('hidden');
+                document.getElementById('popup-step2share').classList.remove('hidden');
+            }, 3000);
+            
+        }, 2000);
+    }
+}
+
+// ========================================
+// 共有機能
+// ========================================
+function shareToTwitter() {
+    const text = '振動は表現になるか？新しい表現の可能性を探る実験プロジェクト ';
+    const url = window.location.href;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    window.open(twitterUrl, '_blank');
+}
+
+function shareToLine() {
+    const text = '振動は表現になるか？新しい表現の可能性を探る実験プロジェクト ';
+    const url = window.location.href;
+    const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(text + ' ' + url)}`;
+    window.open(lineUrl, '_blank');
+}
+
+function copyLink() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        alert('リンクコピー完了　誰かに送って振動体験を共有しよう ');
+    }).catch(() => {
+        prompt('このリンクをコピーして誰かに送ってください:', url);
+    });
+}
+
+// ========================================
+// メニュー機能
+// ========================================
+let isJapanese = true;
+let isMenuOpen = false;
+
+function toggleMenu() {
+    isMenuOpen = !isMenuOpen;
+    const nav = document.getElementById('main-nav');
+    const btn = document.getElementById('menuBtn');
+    
+    if (isMenuOpen) {
+        nav.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', 'メニューを閉じる');
+        btn.querySelector('.menu-text').textContent = '閉じる';
+    } else {
+        nav.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'メニューを開く');
+        btn.querySelector('.menu-text').textContent = 'メニュー';
+    }
+}
+
+function closeMenu() {
+    if (isMenuOpen) {
+        toggleMenu();
+    }
+}
 
    // ========================================
         // 言語切り替え
@@ -1285,4 +1069,3 @@ function popupVibrateTogether() {
     </script>
           </body>
 </html>
-  

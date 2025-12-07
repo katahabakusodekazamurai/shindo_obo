@@ -1296,3 +1296,22 @@ body.english-mode .subtitle {
         pointer-events: none;
     }
 }
+
+/* 振動できない端末用：画面を少し揺らす */
+.shake-screen {
+    animation: screen-shake 0.4s ease;
+}
+
+@keyframes screen-shake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-4px, 0); }
+    50% { transform: translate(4px, 0); }
+    75% { transform: translate(-2px, 0); }
+}
+
+/* 後で動画を入れる領域（最初は非表示） */
+.vibration-video-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
