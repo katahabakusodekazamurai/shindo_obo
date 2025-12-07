@@ -1061,27 +1061,20 @@ a:active {
 /* ============================================
    見出しのスクロールアニメーション
    ============================================ */
+/* ここでは「アニメ用プロパティだけ」定義する */
 h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #0066cc;
-    opacity: 0;
-    transform: translateX(-50px);
+    /* 常に見える状態を基本にする */
+    opacity: 1;
+    transform: translateX(0);
     transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-@media (min-width: 769px) {
-    h2 {
-        font-size: 40px;
-        margin-bottom: 30px;
-    }
-}
-
-/* アニメーション発火後 */
+/* スクロールで画面に入ったときに付くクラス */
 h2.animate-in {
     opacity: 1;
     transform: translateX(0);
 }
+
 
 /* ============================================
    英語モード用フォントサイズ調整
@@ -1314,4 +1307,3 @@ body.english-mode .subtitle {
     margin-top: 20px;
     text-align: center;
 }
-
